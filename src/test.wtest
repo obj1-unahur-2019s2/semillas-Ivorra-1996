@@ -1,0 +1,12 @@
+import semillas.*
+/*Menta
+Ejemplos:
+1-una menta de 1 metro, debería dar semillas y ocupar un espacio de 3 metros cuadrados.
+2-una menta de solo 0.3 metros, no debería dar semillas y ocuparía 0.9 metros cuadrados de espacio.
+*/
+test "Menta" {
+	new Planta(cuantasHorasDeSolTolera = 6,obtencionDeLaSemilla=2007,altura=1)
+	var menta1 = new Menta()
+	assert.that(true)
+
+}
