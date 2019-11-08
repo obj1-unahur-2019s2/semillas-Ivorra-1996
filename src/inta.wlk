@@ -2,7 +2,7 @@ object inta {
 	var property parcelas = []
 	
 	method cantidadDePlantasPorParcela(){
-		return parcelas.sum({platans => parcelas.plantas()})
+		return parcelas.sum({parcela => parcela.plantas()})
 	}
 	method cantidadDeParcelas(){
 		return parcelas.size()
@@ -12,6 +12,6 @@ object inta {
 	}
 	
 	method masAutosustentable(){
-		
+		return (parcelas.filter({parcela => parcela.plantas().size() > 4})).max({parcela => parcela.seAsociaBien()})
 	}
 }

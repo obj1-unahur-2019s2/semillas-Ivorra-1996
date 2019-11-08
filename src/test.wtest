@@ -1,12 +1,56 @@
 import semillas.*
+import parcelas.*
 /*Menta
 Ejemplos:
 1-una menta de 1 metro, debería dar semillas y ocupar un espacio de 3 metros cuadrados.
 2-una menta de solo 0.3 metros, no debería dar semillas y ocuparía 0.9 metros cuadrados de espacio.
 */
 test "Menta" {
-	new Planta(cuantasHorasDeSolTolera = 6,obtencionDeLaSemilla=2007,altura=1)
-	var menta1 = new Menta()
-	assert.that(true)
+	var menta1 = new Menta(horasDeSolTolera=0,altura=1,anoDeObtencion =2007)
+	var menta2 = new Menta(horasDeSolTolera=0,altura=0.3,anoDeObtencion =2007)
+//debería dar semillas. ya que la altura(1) es mayor a 0.4 y me tira error.
+	assert.that(menta1.daSemillas())
+	assert.equals(3,menta1.espacioQueOcupa())
+//no debería dar semillas.
+	assert.that(not menta2.daSemillas())
+//ocuparía 0.9 metros cuadrados de espacio.
+	assert.equals(0.9,menta2.espacioQueOcupa())
+}
+/*Por ejemplo, si tuviesemos una soja de 0.6 metros y de semilla de 2009, la planta tendría una tolerancia al sol de 7 horas, no daría semillas y 
+ocuparía 0.3 metros cuadrados.*/
+test "Soja"{
+	var soja1 = new Soja(horasDeSolTolera=0,altura=0.6,anoDeObtencion =2009)
+	assert.equals(7,soja1.horasDeSolTolera())
+	assert.that(not soja1.daSemillas())
+	assert.equals(0.3,soja1.espacioQueOcupa())
+}
+/*Por ejemplo:
+* si tenemos una quinoa que tolera 12 horas de sol y su semilla de origen es de 2010, se trata de una planta que da semillas.
+* si tenemos una planta que tolere 9 horas de sol pero cuya semilla de origen es de 2001, también da semillas.*/
+test "Quinoa"{
+	var quinoa1 = new Quinoa(horasDeSolTolera=12,anoDeObtencion =2010,altura=0)
+	var quinoa2 = new Quinoa(horasDeSolTolera=9,anoDeObtencion =2001,altura=0)
+	assert.that(quinoa1.daSemillas())
+	assert.that(quinoa2.daSemillas())
+}
 
+/*Un ejemplo:
+Una parcela de 20 metros de ancho por 1 metro de largo que recibe 8 horas de sol por día,
+tiene una superficie de 20 metros cuadrados y la cantidad máxima de plantas que tolera es 4.
+
+Si a esa parcela le plantamos 4 plantas de soja de más de 1 metro (que toleran 9 horas de sol),
+no tendría complicaciones. Si intentaramos agregar una quinta planta, se superaría la cantidad máxima y nos arrojaría un error.
+*/
+test "Parcela"{
+	var parcelita1 = new Parcela(ancho=20,largo=1,horasDeSol=8)
+	assert.equals(20,parcelita1.superficie())
+	assert.equals(4,parcelita1.cantidadMaxima())
+	parcelita1.plantarUnaPlanta(new Soja(horasDeSolTolera=0,altura=2,anoDeObtencion =2004))
+	parcelita1.plantarUnaPlanta(new Soja(horasDeSolTolera=0,altura=2,anoDeObtencion =2004))
+	parcelita1.plantarUnaPlanta(new Soja(horasDeSolTolera=0,altura=2,anoDeObtencion =2004))
+	parcelita1.plantarUnaPlanta(new Soja(horasDeSolTolera=0,altura=2,anoDeObtencion =2004))
+	assert.that(parcelita1.tieneComplicaciones())
+	parcelita1.plantarUnaPlanta(new Soja(horasDeSolTolera=0,altura=2,anoDeObtencion =2004))
+	assert.throwsException({parcelita1.plantarUnaPlanta(new Soja(horasDeSolTolera=0,altura=2,anoDeObtencion =2004))})
+// no me funciona este test , dice que no entiende horasDeSolTolera().
 }
